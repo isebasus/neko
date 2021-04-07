@@ -60,7 +60,7 @@ namespace DiscordBot.Modules
             builder.WithTitle("UWWWUU CATT");
             builder.WithImageUrl(img);
 
-            builder.WithColor(new Color(176,  255, 168));
+            builder.WithColor(new Color(255,  159, 159));
             await Context.Channel.SendMessageAsync("", false, builder.Build());       
             
         }
