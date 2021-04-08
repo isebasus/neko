@@ -31,6 +31,13 @@ namespace DiscordBot.Modules
             
             return data;
         }
+
+        [Command("goodnight")]
+        public async Task Night()
+        {
+            string user = Context.User.Username.ToLower();
+            await Context.Channel.SendMessageAsync("uwu gn " + user);
+        }
         
         [Command("cat")]
         public async Task Cat()
@@ -57,7 +64,7 @@ namespace DiscordBot.Modules
             
             EmbedBuilder builder = new EmbedBuilder();
 
-            builder.WithTitle("UWWWUU CATT");
+            builder.WithTitle("🐱 Meoww");
             builder.WithImageUrl(img);
 
             builder.WithColor(new Color(255,  159, 159));
