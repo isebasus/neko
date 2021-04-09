@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
@@ -13,6 +16,8 @@ namespace DiscordBot
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        
+        public IMessageChannel TextingChannel { get; private set; } = null;
 	
         public static void Main(string[] args)
             => new Program().MainAsync().GetAwaiter().GetResult();
@@ -30,9 +35,9 @@ namespace DiscordBot
                 .BuildServiceProvider();
             
             _client.Log += Log;
-
-            await RegisterCommandsAsync();
             
+            await RegisterCommandsAsync();
+
             await _client.LoginAsync(TokenType.Bot, 
                 token);
             await _client.StartAsync();
@@ -40,7 +45,7 @@ namespace DiscordBot
             // Block this task until the program is closed.
             await Task.Delay(-1);
         }
-
+        
         public async Task RegisterCommandsAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
