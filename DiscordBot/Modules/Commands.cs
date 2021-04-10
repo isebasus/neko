@@ -1,16 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Reflection;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
 
 

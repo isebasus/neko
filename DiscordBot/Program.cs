@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
-using System.Reflection;
-using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using DiscordBot.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordBot
@@ -16,6 +16,14 @@ namespace DiscordBot
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        
+        private string[] expressions = {
+            ">_<", ":3", "ʕʘ‿ʘʔ", ":D", "._.",
+            ";3", "xD", "ㅇㅅㅇ", "(人◕ω◕)",
+            ">_>", "ÙωÙ", "UwU", "OwO", ":P",
+            "(◠‿◠✿)", "^_^", ";_;", "XDDD",
+            "x3", "(• o •)", "<_<"
+        };
         
         public IMessageChannel TextingChannel { get; private set; } = null;
 	
@@ -55,9 +63,19 @@ namespace DiscordBot
 
         private async Task HandleCommandAsync(SocketMessage arg)
         {
+            bool isOwo = Owowifier.IsOwowify;
+            Random rand = new Random();
+            int random = rand.Next(0, 20);
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
-            //if (message.Author.IsBot) return;
+            if (message.Author.IsBot) return;
+
+            if (isOwo)
+            {
+                var newMessage = Owowify(message.Content);
+                await context.Message.DeleteAsync();
+                await context.Channel.SendMessageAsync("**" + context.User.Username + "**: " + newMessage + " " + expressions[random]);
+            }
 
             int argPos = 0;
             if (message.HasStringPrefix("~", ref argPos))
@@ -65,6 +83,14 @@ namespace DiscordBot
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
                 if (!result.IsSuccess) Console.WriteLine(result.ErrorReason);
             }
+        }
+
+        private string Owowify(string text)
+        {
+            return text.Replace("l", "w").Replace("L", "W")
+                .Replace("r", "w").Replace("R", "W")
+                .Replace("o", "u").Replace("O", "U");
+
         }
         
         private Task Log(LogMessage msg)
