@@ -39,11 +39,18 @@ namespace DiscordBot.Modules
             await Context.Channel.SendMessageAsync("uwu gn " + user);
         }
         
-        [Command("sebwy")]
-        public async Task Birf()
+        [Command("catgirl")]
+        public async Task Catgirl()
         {
             string user = Context.User.Username.ToLower();
-            await Context.Channel.SendMessageAsync("owo happy birfday sebwy, love you");
+            if (user == "sebastian")
+            {
+                await Context.Channel.SendMessageAsync("owo I love you sebwy <3");
+            }
+            else
+            {
+                await Context.Channel.SendMessageAsync("ew your not sebwy");
+            }
         }
         
         [Command("cat")]

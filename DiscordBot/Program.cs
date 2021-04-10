@@ -57,7 +57,7 @@ namespace DiscordBot
         {
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
-            if (message.Author.IsBot) return;
+            //if (message.Author.IsBot) return;
 
             int argPos = 0;
             if (message.HasStringPrefix("~", ref argPos))
