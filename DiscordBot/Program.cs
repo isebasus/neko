@@ -59,13 +59,18 @@ namespace DiscordBot
             bool isOwo = Owowifier.IsOwowify;
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
-            if (message.Author.IsBot) return;
+            var author = (IGuildUser)context.Message.Author;
+            var nickname = author.Nickname ?? author.Username;
+            if (message.Author.IsBot)
+            {
+                return;
+            }
 
             if (isOwo)
             {
                 var newMessage = Owowification.Owowify(message.Content);
                 await context.Message.DeleteAsync();
-                await context.Channel.SendMessageAsync("**" + (IGuildUser)context.Message.Author + "**: " + newMessage + " " + Owowification.Express());
+                await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
             }
 
             int argPos = 0;

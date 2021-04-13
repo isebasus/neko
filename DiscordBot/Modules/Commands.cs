@@ -27,7 +27,8 @@ namespace DiscordBot.Modules
         [Command("goodnight")]
         public async Task Night()
         {
-            string user = Context.User.Username.ToLower();
+            var author = (IGuildUser)Context.Message.Author;
+            var user = author.Nickname ?? author.Username;
             await Context.Channel.SendMessageAsync("uwu gn " + user);
         }
         
