@@ -108,7 +108,7 @@
         <Compile Include="Modules\Owowifier.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Util\CheckMessage.cs" />
+        <Compile Include="Util\Owowification.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

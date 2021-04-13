@@ -7,6 +7,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using DiscordBot.Modules;
+using DiscordBot.Util;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DiscordBot
@@ -17,14 +18,6 @@ namespace DiscordBot
         private CommandService _commands;
         private IServiceProvider _services;
         
-        private string[] expressions = {
-            ">_<", ":3", "ʕʘ‿ʘʔ", ":D", "._.",
-            ";3", "xD", "ㅇㅅㅇ", "(人◕ω◕)",
-            ">_>", "ÙωÙ", "UwU", "OwO", ":P",
-            "(◠‿◠✿)", "^_^", ";_;", "XDDD",
-            "x3", "(• o •)", "<_<"
-        };
-        
         public IMessageChannel TextingChannel { get; private set; } = null;
 	
         public static void Main(string[] args)
@@ -32,7 +25,7 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
-            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.6t0MD_cBBBJCxTagcgVq6S2cZYQ";
+            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.Z4oKUGNe51sSaHPrCyk_wgJDxvA";
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
@@ -64,17 +57,15 @@ namespace DiscordBot
         private async Task HandleCommandAsync(SocketMessage arg)
         {
             bool isOwo = Owowifier.IsOwowify;
-            Random rand = new Random();
-            int random = rand.Next(0, 20);
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
             if (message.Author.IsBot) return;
 
             if (isOwo)
             {
-                var newMessage = Owowify(message.Content);
+                var newMessage = Owowification.Owowify(message.Content);
                 await context.Message.DeleteAsync();
-                await context.Channel.SendMessageAsync("**" + context.User.Username + "**: " + newMessage + " " + expressions[random]);
+                await context.Channel.SendMessageAsync("**" + (IGuildUser)context.Message.Author + "**: " + newMessage + " " + Owowification.Express());
             }
 
             int argPos = 0;
@@ -85,14 +76,6 @@ namespace DiscordBot
             }
         }
 
-        private string Owowify(string text)
-        {
-            return text.Replace("l", "w").Replace("L", "W")
-                .Replace("r", "w").Replace("R", "W")
-                .Replace("o", "u").Replace("O", "U");
-
-        }
-        
         private Task Log(LogMessage msg)
         {
             Console.WriteLine(msg.ToString());
