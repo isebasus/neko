@@ -1,6 +1,6 @@
-# CATGIRLS AND C# OMFG IMA NUT
+# 😹 Catgirl Bot [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/nkomarn/Harbor/blob/master/LICENSE)
 
-Catgirl bot that makes Sebastian feel nice.
+Just decided to make this bot in Discord.NET, so have fun looking at c#!
 
 
 
