@@ -32,17 +32,18 @@ namespace DiscordBot.Modules
             await Context.Channel.SendMessageAsync("uwu gn " + user);
         }
         
-        [Command("catgirl")]
+        [Command("simp")]
         public async Task Catgirl()
         {
-            string user = Context.User.Username.ToLower();
-            if (user == "sebastian")
+            var user = (IGuildUser) Context.Message.Author;
+            var nickname = user.Nickname ?? user.Username;
+            if (user.GuildPermissions.Administrator)
             {
-                await Context.Channel.SendMessageAsync("owo I love you sebwy <3");
+                await Context.Channel.SendMessageAsync("owo I love you " + nickname + " <3");
             }
             else
             {
-                await Context.Channel.SendMessageAsync("ew your not sebwy");
+                await Context.Channel.SendMessageAsync("ew your not " + nickname);
             }
         }
         
@@ -64,8 +65,6 @@ namespace DiscordBot.Modules
                     {
                         img = value;
                     }
-                    //Do something with name and value
-                    //System.Windows.MessageBox.Show("name is "+name+" and value is "+value);
                 }
             }
             
@@ -74,7 +73,7 @@ namespace DiscordBot.Modules
             builder.WithTitle("🐱 Meoww");
             builder.WithImageUrl(img);
 
-            builder.WithColor(new Color(255,  159, 159));
+            builder.WithColor(new Color(245,  87, 108));
             await Context.Channel.SendMessageAsync("", false, builder.Build());       
             
         }

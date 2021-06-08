@@ -25,7 +25,7 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
-            string token = "versecretinformation";
+            string token = "";
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
@@ -54,6 +54,13 @@ namespace DiscordBot
             
         }
 
+        private async Task Owowify(SocketCommandContext context, SocketUserMessage message, string nickname)
+        {
+            var newMessage = Owowification.Owowify(message.Content);
+            await context.Message.DeleteAsync();
+            await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
+        }
+        
         private async Task HandleCommandAsync(SocketMessage arg)
         {
             bool isOwo = Owowifier.IsOwowify;
@@ -61,16 +68,14 @@ namespace DiscordBot
             var context = new SocketCommandContext(_client, message);
             var author = (IGuildUser)context.Message.Author;
             var nickname = author.Nickname ?? author.Username;
-            if (message.Author.IsBot)
+            
+            if (message != null && message.Author.IsBot)
             {
                 return;
             }
-
             if (isOwo)
             {
-                var newMessage = Owowification.Owowify(message.Content);
-                await context.Message.DeleteAsync();
-                await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
+                await Owowify(context, message, nickname);
             }
 
             int argPos = 0;

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 
 namespace DiscordBot.Modules
@@ -11,22 +12,15 @@ namespace DiscordBot.Modules
          */
         public static bool _IsOwowify = new bool();
         public static bool IsOwowify 
-        {  get
-            {
-                return _IsOwowify;
-            }
-            set
-            {
-                _IsOwowify = value;
-            } 
-        }
+        {  get { return _IsOwowify; } set { _IsOwowify = value; } }
         
         [Command("owowify")]
         public async Task SetBool(string arg)
         {
-            string user = Context.User.Username.ToLower();
+            var user = (IGuildUser) Context.Message.Author;
+            var nickname = user.Nickname ?? user.Username;
             string argument = arg.ToLower();
-            if (user == "sebastian")
+            if (user.GuildPermissions.Administrator)
             {
                 switch (argument)
                 {
@@ -45,7 +39,7 @@ namespace DiscordBot.Modules
             }
             else
             {
-                await Context.Channel.SendMessageAsync("your not daddy sebwy");
+                await Context.Channel.SendMessageAsync("your not daddy " + nickname);
             }
            
 
