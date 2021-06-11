@@ -1,34 +1,23 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
-using RestSharp;
-
+using DiscordBot.Util;
 
 namespace DiscordBot.Modules
 {
     public class Commands : ModuleBase<SocketCommandContext>
     {
-        public static String getImage()
+        private SocketRole GetRole(ulong id, SocketCommandContext context)
         {
-            var client = new RestClient();
-            client.BaseUrl = new Uri("https://api.thecatapi.com/v1");
-
-            var request = new RestRequest("https://api.thecatapi.com/v1/images/search", Method.GET)
-                .AddHeader("x-api-key", "4ca58214-f2e4-4c02-96ae-4c6b862603b6");
-            
-            var response = client.Execute(request);
-            var data = response.Content;
-            
-            return data;
+            var user = (IGuildUser)Context.Guild.GetUser(828491242627268668);
+            var roles = user.RoleIds;
+            var mainRole = roles.ElementAt(1);
+            return Context.Guild.GetRole(mainRole);
         }
-
+        
         [Command("goodnight")]
         public async Task Night()
         {
@@ -51,25 +40,37 @@ namespace DiscordBot.Modules
                 await Context.Channel.SendMessageAsync("ew your not " + nickname);
             }
         }
+
+        [Command("catgirl")]
+        public async Task Neko()
+        {
+            string nekoImage = WebScrape.GetNeko();
+            var role = GetRole(828491242627268668, Context);
+            
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle("🌸 UwU");
+            builder.WithImageUrl(nekoImage);
+            builder.WithColor(role.Color);
+            await Context.Channel.SendMessageAsync("", false, builder.Build());
+
+        }
         
         [Command("cat")]
         public async Task Cat()
         {
-            string json = getImage();
-            string img = "";
-            var user = (IGuildUser)Context.Guild.GetUser(828491242627268668);
-            var roles = user.RoleIds;
-            var mainRole = roles.ElementAt(1);
-            var role = Context.Guild.GetRole(mainRole);
             
-            Color color = role.Color;
+            string json = WebScrape.GetCat();
+            string img = "";
+            
+            // Get bot role color
+            var role = GetRole(828491242627268668, Context);
             JArray array = JArray.Parse(json);
             foreach (JObject obj in array.Children<JObject>())
             {
                 foreach (JProperty singleProp in obj.Properties())
                 {
                     string name = singleProp.Name;
-                    string value = singleProp.Value.ToString();
+                    string value = singleProp.Value.ToString(); 
 
                     if (name == "url")
                     {
@@ -81,7 +82,7 @@ namespace DiscordBot.Modules
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("🐱 Meoww");
             builder.WithImageUrl(img);
-            builder.WithColor(color);
+            builder.WithColor(role.Color);
             await Context.Channel.SendMessageAsync("", false, builder.Build());
             
         }
