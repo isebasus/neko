@@ -1,7 +1,12 @@
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
@@ -52,7 +57,12 @@ namespace DiscordBot.Modules
         {
             string json = getImage();
             string img = "";
+            var user = (IGuildUser)Context.Guild.GetUser(828491242627268668);
+            var roles = user.RoleIds;
+            var mainRole = roles.ElementAt(1);
+            var role = Context.Guild.GetRole(mainRole);
             
+            Color color = role.Color;
             JArray array = JArray.Parse(json);
             foreach (JObject obj in array.Children<JObject>())
             {
@@ -69,12 +79,10 @@ namespace DiscordBot.Modules
             }
             
             EmbedBuilder builder = new EmbedBuilder();
-
             builder.WithTitle("🐱 Meoww");
             builder.WithImageUrl(img);
-
-            builder.WithColor(new Color(245,  87, 108));
-            await Context.Channel.SendMessageAsync("", false, builder.Build());       
+            builder.WithColor(color);
+            await Context.Channel.SendMessageAsync("", false, builder.Build());
             
         }
     }
