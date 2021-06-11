@@ -25,7 +25,7 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
-            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.bU35oW0DDYzMHsp3tgL2ZwVKkfY";
+            string token = "";
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
