@@ -22,6 +22,19 @@ namespace DiscordBot.Util
             return data;
         }
 
+        public static String GetAction(string action)
+        {
+            var client = new RestClient();
+            client.BaseUrl = new Uri("http://api.nekos.fun:8080/api/");
+
+            var request = new RestRequest("http://api.nekos.fun:8080/api/" + action, Method.GET);
+
+            var response = client.Execute(request);
+            var data = response.Content;
+
+            return data;
+        }
+
         public static String GetNeko()
         {
             var request = NekoClient.Image.Neko().Result;

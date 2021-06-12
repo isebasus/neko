@@ -1,10 +1,14 @@
+using System;
+using System.CodeDom;
 using System.Linq;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using DiscordBot.Util;
+using RestSharp;
 
 namespace DiscordBot.Modules
 {
@@ -16,6 +20,46 @@ namespace DiscordBot.Modules
             var roles = user.RoleIds;
             var mainRole = roles.ElementAt(1);
             return Context.Guild.GetRole(mainRole);
+        }
+
+        private async Task SendImage(SocketCommandContext context, SocketRole role, string image, string message)
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle(message);
+            builder.WithImageUrl(image);
+            builder.WithColor(role.Color);
+            await context.Channel.SendMessageAsync("", false, builder.Build());
+        }
+
+        private string ParseJson(string json, string target)
+        {
+            JArray array = JArray.Parse(json);
+            foreach (JObject obj in array.Children<JObject>())
+            {
+                foreach (JProperty singleProp in obj.Properties())
+                {
+                    string name = singleProp.Name;
+                    string value = singleProp.Value.ToString(); 
+
+                    if (name == target)
+                    {
+                        return value;
+                    }
+                }
+            }
+            return "";
+        }
+
+        private async Task SendImage(string action, string message)
+        {
+            // Get bots role
+            var role = GetRole(828491242627268668, Context);
+            
+            string kissJson = WebScrape.GetAction(action);
+            var objects = JObject.Parse(kissJson);
+            
+            string kissImage = (String) objects["image"];
+            await SendImage(Context, role, kissImage, message);
         }
         
         [Command("goodnight")]
@@ -29,62 +73,66 @@ namespace DiscordBot.Modules
         [Command("simp")]
         public async Task Catgirl()
         {
+            var admin = Context.Guild.GetUser(Context.Guild.Owner.Id);
+            var nickname = admin.Nickname ?? admin.Username;
             var user = (IGuildUser) Context.Message.Author;
-            var nickname = user.Nickname ?? user.Username;
             if (user.GuildPermissions.Administrator)
             {
                 await Context.Channel.SendMessageAsync("owo I love you " + nickname + " <3");
             }
             else
             {
-                await Context.Channel.SendMessageAsync("ew your not " + nickname);
+                await Context.Channel.SendMessageAsync("ew you're not " + nickname);
             }
         }
 
+        [Command("kiss")]
+        public async Task Kiss()
+        {
+            await SendImage("kiss", "😽 mwuah");
+        }
+        
+        [Command("lick")]
+        public async Task Lick()
+        {
+            await SendImage("lick", "😽 mwuah");
+        }
+        
+        [Command("hug")]
+        public async Task Hug()
+        {
+            await SendImage("hug", "😽 mwuah");
+        }
+        
+        [Command("slap")]
+        public async Task Slap()
+        {
+            await SendImage("slap", "😽 mwuah");
+        }
+        
+        [Command("cuddle")]
+        public async Task Cuddle()
+        {
+            await SendImage("cuddle", "😽 mwuah");
+        }
+        
         [Command("catgirl")]
         public async Task Neko()
         {
             string nekoImage = WebScrape.GetNeko();
             var role = GetRole(828491242627268668, Context);
-            
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("🌸 UwU");
-            builder.WithImageUrl(nekoImage);
-            builder.WithColor(role.Color);
-            await Context.Channel.SendMessageAsync("", false, builder.Build());
-
+            await SendImage(Context, role, nekoImage, "🌸 UwU");
         }
         
         [Command("cat")]
         public async Task Cat()
         {
+            // Get bot's role
+            var role = GetRole(828491242627268668, Context);
             
             string json = WebScrape.GetCat();
-            string img = "";
-            
-            // Get bot role color
-            var role = GetRole(828491242627268668, Context);
-            JArray array = JArray.Parse(json);
-            foreach (JObject obj in array.Children<JObject>())
-            {
-                foreach (JProperty singleProp in obj.Properties())
-                {
-                    string name = singleProp.Name;
-                    string value = singleProp.Value.ToString(); 
-
-                    if (name == "url")
-                    {
-                        img = value;
-                    }
-                }
-            }
-            
-            EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("🐱 Meoww");
-            builder.WithImageUrl(img);
-            builder.WithColor(role.Color);
-            await Context.Channel.SendMessageAsync("", false, builder.Build());
-            
+            string img = ParseJson(json, "url");
+            await SendImage(Context, role, img, "🐱 Meoww");
         }
     }
 }

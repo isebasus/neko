@@ -17,8 +17,9 @@ namespace DiscordBot.Modules
         [Command("owowify")]
         public async Task SetBool(string arg)
         {
+            var admin = Context.Guild.GetUser(Context.Guild.Owner.Id);
+            var nickname = admin.Nickname ?? admin.Username;
             var user = (IGuildUser) Context.Message.Author;
-            var nickname = user.Nickname ?? user.Username;
             string argument = arg.ToLower();
             if (user.GuildPermissions.Administrator)
             {
