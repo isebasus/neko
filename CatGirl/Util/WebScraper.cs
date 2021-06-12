@@ -5,7 +5,7 @@ using NekosSharp;
 
 namespace DiscordBot.Util
 {
-    public class WebScrape
+    public class WebScraper
     {
         public static NekoClient NekoClient = new NekoClient("neko");
         public static String GetCat()

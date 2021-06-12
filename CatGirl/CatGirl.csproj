@@ -112,12 +112,14 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Modules\Commands.cs" />
+        <Compile Include="Commands\Actions.cs" />
+        <Compile Include="Commands\Commands.cs" />
+        <Compile Include="Commands\CommandSource.cs" />
         <Compile Include="Modules\Owowifier.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Util\Owowification.cs" />
-        <Compile Include="Util\WebScrape.cs" />
+        <Compile Include="Util\WebScraper.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
