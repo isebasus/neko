@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -11,50 +13,61 @@ namespace DiscordBot.Commands
 {
     public class CommandSource
     {
+
+        public static Color CheckColor(Color color)
+        {
+            if (color == Color.Default)
+            {
+                color = new Color(88, 101, 242);
+            }
+            
+            return color;
+        }
+
         public static SocketRole GetRole(ulong id, SocketCommandContext context)
         {
             SocketGuildUser socketGuildUser = context.Guild.GetUser(id);
             var bot = (IGuildUser) context.Guild.GetUser(id);
 
             var hierarchy = socketGuildUser.Hierarchy;
-            SocketRole[] socketRoles = new SocketRole[bot.RoleIds.Count];
+            IDictionary<int, SocketRole> socketRoles = new Dictionary<int, SocketRole>();
             foreach (ulong roleId in bot.RoleIds)
             {
                 // Set each role to SocketRole array
                 SocketRole role = context.Guild.GetRole(roleId);
-                socketRoles[role.Position % bot.RoleIds.Count] = role;
-            }
-            if (socketRoles.Last() == null) // Check duplicate roles
-            {
-                hierarchy--;
+                socketRoles.Add(role.Position, role);
             }
             // Get main role
-            var mainRole = socketRoles[hierarchy % bot.RoleIds.Count].Id;
+            var mainRole = socketRoles[socketRoles.Keys.Max()].Id;
             return context.Guild.GetRole(mainRole);
         }
 
         public static async Task SendImage(SocketCommandContext context, SocketRole role, string image, string message)
         {
+            Color color = CheckColor(role.Color);
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle(message);
             builder.WithImageUrl(image);
             builder.WithFooter($"Requested by: {context.Message.Author.Username}#{context.Message.Author.Discriminator}", context.User.GetAvatarUrl());
-            builder.WithColor(role.Color);
+            builder.WithColor(color);
+            
             await context.Channel.SendMessageAsync("", false, builder.Build());
         }
-
-        private static async Task FormatAction(SocketCommandContext context, SocketRole role, SocketUser user,
+        
+        public static async Task FormatAction(SocketCommandContext context, SocketRole role, SocketUser user,
             string image, string message, string action)
         {
+            Color color = CheckColor(role.Color);
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle(message);
             builder.WithDescription("**" + context.Message.Author.Username + "** is " + action + " **" + user.Username + "**!");
             builder.WithFooter($"Requested by: {context.Message.Author.Username}#{context.Message.Author.Discriminator}", context.User.GetAvatarUrl());
             builder.WithImageUrl(image);
-            builder.WithColor(role.Color);
+            builder.WithColor(color);
+            
             await context.Channel.SendMessageAsync("", false, builder.Build());
         }
-
+        
         public static string ParseJson(string json, string target)
         {
             JArray array = JArray.Parse(json);
@@ -71,6 +84,7 @@ namespace DiscordBot.Commands
                     }
                 }
             }
+            
             return "";
         }
         
@@ -82,6 +96,7 @@ namespace DiscordBot.Commands
             var objects = JObject.Parse(json);
             
             string image = (String) objects["image"];
+            
             await FormatAction(context, role, user, image, message, action);
         }
     }

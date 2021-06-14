@@ -26,25 +26,25 @@ namespace DiscordBot.Commands
         [Command("lick")]
         public async Task Lick(SocketUser user = null)
         {
-            await Action("lick", "😽 mwuah", "licking", user);
+            await Action("lick", "👅 lick!", "licking", user);
         }
         
         [Command("hug")]
         public async Task Hug(SocketUser user = null)
         {
-            await Action("hug", "😽 mwuah", "hugging", user);
+            await Action("hug", "💞 hug!", "hugging", user);
         }
         
         [Command("slap")]
         public async Task Slap(SocketUser user = null)
         {
-            await Action("slap", "😽 mwuah", "slapping", user);
+            await Action("slap", "🔪 slap!", "slapping", user);
         }
         
         [Command("cuddle")]
         public async Task Cuddle(SocketUser user = null)
         {
-            await Action("cuddle", "😽 mwuah", "cuddling", user);
+            await Action("cuddle", "💖 cuddle!", "cuddling", user);
         }
     }
 }
