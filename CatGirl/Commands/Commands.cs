@@ -36,7 +36,7 @@ namespace DiscordBot.Commands
         {
             string nekoImage = WebScraper.GetNeko();
             var role = CommandSource.GetRole(828491242627268668, Context);
-            await CommandSource.SendImage(Context, role, nekoImage, "🌸 UwU");
+            await CommandSource.SendImage(Context, role, nekoImage, "🌸 uwu");
         }
         
         [Command("cat")]
@@ -47,7 +47,7 @@ namespace DiscordBot.Commands
             
             string json = WebScraper.GetCat();
             string img = CommandSource.ParseJson(json, "url");
-            await CommandSource.SendImage(Context, role, img, "🐱 Meoww");
+            await CommandSource.SendImage(Context, role, img, "🐱 Meoww-");
         }
     }
 }

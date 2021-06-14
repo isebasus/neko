@@ -13,9 +13,23 @@ namespace DiscordBot.Commands
     {
         public static SocketRole GetRole(ulong id, SocketCommandContext context)
         {
-            var user = (IGuildUser) context.Guild.GetUser(828491242627268668);
-            var roles = user.RoleIds;
-            var mainRole = roles.ElementAt(1);
+            SocketGuildUser socketGuildUser = context.Guild.GetUser(id);
+            var bot = (IGuildUser) context.Guild.GetUser(id);
+
+            var hierarchy = socketGuildUser.Hierarchy;
+            SocketRole[] socketRoles = new SocketRole[bot.RoleIds.Count];
+            foreach (ulong roleId in bot.RoleIds)
+            {
+                // Set each role to SocketRole array
+                SocketRole role = context.Guild.GetRole(roleId);
+                socketRoles[role.Position % bot.RoleIds.Count] = role;
+            }
+            if (socketRoles.Last() == null) // Check duplicate roles
+            {
+                hierarchy--;
+            }
+            // Get main role
+            var mainRole = socketRoles[hierarchy % bot.RoleIds.Count].Id;
             return context.Guild.GetRole(mainRole);
         }
 
@@ -24,6 +38,7 @@ namespace DiscordBot.Commands
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle(message);
             builder.WithImageUrl(image);
+            builder.WithFooter($"Requested by: {context.Message.Author.Username}#{context.Message.Author.Discriminator}", context.User.GetAvatarUrl());
             builder.WithColor(role.Color);
             await context.Channel.SendMessageAsync("", false, builder.Build());
         }
@@ -49,14 +64,13 @@ namespace DiscordBot.Commands
                 {
                     string name = singleProp.Name;
                     string value = singleProp.Value.ToString();
-
+                    
                     if (name == target)
                     {
                         return value;
                     }
                 }
             }
-
             return "";
         }
         
