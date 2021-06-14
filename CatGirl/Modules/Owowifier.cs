@@ -20,10 +20,9 @@ namespace DiscordBot.Modules
             var admin = Context.Guild.GetUser(Context.Guild.Owner.Id);
             var nickname = admin.Nickname ?? admin.Username;
             var user = (IGuildUser) Context.Message.Author;
-            string argument = arg.ToLower();
             if (user.GuildPermissions.Administrator)
             {
-                switch (argument)
+                switch (arg.ToLower())
                 {
                     case "on":
                         _IsOwowify = true;

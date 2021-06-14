@@ -1,40 +1,50 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using DiscordBot.Util;
 
 namespace DiscordBot.Commands
 {
     public class Actions : ModuleBase<SocketCommandContext>
     {
-        [Command("kiss")]
-        public async Task Kiss()
+        private async Task Action(string key, string message, string action, SocketUser user)
         {
-            await CommandSource.SendAction("kiss", "😽 mwuah", Context);
+            if (user == null)
+            {
+                user = Context.User;
+            }
+            await CommandSource.SendAction(Context, user, key, message, action);
+
+        }        
+        [Command("kiss")]
+        public async Task Kiss(SocketUser user = null)
+        {
+            await Action("kiss", "😽 mwuah", "kissing", user);
         }
         
         [Command("lick")]
-        public async Task Lick()
+        public async Task Lick(SocketUser user = null)
         {
-            await CommandSource.SendAction("lick", "😽 mwuah", Context);
+            await Action("lick", "😽 mwuah", "licking", user);
         }
         
         [Command("hug")]
-        public async Task Hug()
+        public async Task Hug(SocketUser user = null)
         {
-            await CommandSource.SendAction("hug", "😽 mwuah", Context);
+            await Action("hug", "😽 mwuah", "hugging", user);
         }
         
         [Command("slap")]
-        public async Task Slap()
+        public async Task Slap(SocketUser user = null)
         {
-            await CommandSource.SendAction("slap", "😽 mwuah", Context);
+            await Action("slap", "😽 mwuah", "slapping", user);
         }
         
         [Command("cuddle")]
-        public async Task Cuddle()
+        public async Task Cuddle(SocketUser user = null)
         {
-            await CommandSource.SendAction("cuddle", "😽 mwuah", Context);
+            await Action("cuddle", "😽 mwuah", "cuddling", user);
         }
     }
 }
