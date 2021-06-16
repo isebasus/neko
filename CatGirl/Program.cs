@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
@@ -25,11 +27,11 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
-            string token = "";
+            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.CZuUn2hu_THdY9hLK0sVbAXLXe8";
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
-
+            
             _services = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
@@ -56,7 +58,9 @@ namespace DiscordBot
 
         private async Task Owowify(SocketCommandContext context, SocketUserMessage message, string nickname)
         {
-            var newMessage = Owowification.Owowify(message.Content);
+            List<GuildEmote> emotes = new List<GuildEmote>(context.Guild.Emotes);
+
+            var newMessage = Owowification.Owowify(message.Content, emotes);
             await context.Message.DeleteAsync();
             await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
         }

@@ -42,7 +42,6 @@ namespace DiscordBot.Commands
         [Command("cat")]
         public async Task Cat()
         {
-            // Get bot's role
             var role = CommandSource.GetRole(828491242627268668, Context);
             
             string json = WebScraper.GetCat();

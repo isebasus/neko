@@ -13,7 +13,7 @@ namespace DiscordBot.Commands
 {
     public class CommandSource
     {
-
+        // Set role color to custom color if default
         public static Color CheckColor(Color color)
         {
             if (color == Color.Default)
@@ -23,7 +23,8 @@ namespace DiscordBot.Commands
             
             return color;
         }
-
+        
+        // Gets main role of a user
         public static SocketRole GetRole(ulong id, SocketCommandContext context)
         {
             SocketGuildUser socketGuildUser = context.Guild.GetUser(id);
@@ -42,6 +43,7 @@ namespace DiscordBot.Commands
             return context.Guild.GetRole(mainRole);
         }
 
+        // Sends an images with EmbedBuilders
         public static async Task SendImage(SocketCommandContext context, SocketRole role, string image, string message)
         {
             Color color = CheckColor(role.Color);
@@ -54,6 +56,7 @@ namespace DiscordBot.Commands
             await context.Channel.SendMessageAsync("", false, builder.Build());
         }
         
+        // Sends Actions with EmbedBuilders
         public static async Task FormatAction(SocketCommandContext context, SocketRole role, SocketUser user,
             string image, string message, string action)
         {
