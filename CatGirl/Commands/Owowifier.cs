@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 
-namespace DiscordBot.Modules
+namespace DiscordBot.Commands
 {
     public class Owowifier : ModuleBase<SocketCommandContext>
     {

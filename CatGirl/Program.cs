@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DiscordBot.Modules;
+using DiscordBot.Commands;
 using DiscordBot.Util;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,7 +24,7 @@ namespace DiscordBot
 
         public async Task MainAsync()
         {
-            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.CZuUn2hu_THdY9hLK0sVbAXLXe8";
+            string token = "";
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
