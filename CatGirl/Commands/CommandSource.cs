@@ -25,7 +25,7 @@ namespace DiscordBot.Commands
         }
         
         // Gets main role of a user
-        public static SocketRole GetRole(ulong id, SocketCommandContext context)
+        public static SocketRole GetMainRole(ulong id, SocketCommandContext context)
         {
             var bot = (IGuildUser) context.Guild.GetUser(id);
             
@@ -92,7 +92,7 @@ namespace DiscordBot.Commands
         public static async Task SendAction(SocketCommandContext context, SocketUser user, string key, string message, string action)
         {
             // Get bots role
-            var role = GetRole(828491242627268668, context);
+            var role = GetMainRole(828491242627268668, context);
             string json = WebScraper.GetAction(key);
             var objects = JObject.Parse(json);
             
