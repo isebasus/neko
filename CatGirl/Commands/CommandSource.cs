@@ -18,7 +18,7 @@ namespace DiscordBot.Commands
         {
             if (color == Color.Default)
             {
-                color = new Color(88, 101, 242);
+                return new Color(88, 101, 242);
             }
             
             return color;
@@ -27,10 +27,8 @@ namespace DiscordBot.Commands
         // Gets main role of a user
         public static SocketRole GetRole(ulong id, SocketCommandContext context)
         {
-            SocketGuildUser socketGuildUser = context.Guild.GetUser(id);
             var bot = (IGuildUser) context.Guild.GetUser(id);
-
-            var hierarchy = socketGuildUser.Hierarchy;
+            
             IDictionary<int, SocketRole> socketRoles = new Dictionary<int, SocketRole>();
             foreach (ulong roleId in bot.RoleIds)
             {

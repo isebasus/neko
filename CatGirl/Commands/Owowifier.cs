@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using DiscordBot.Util;
 
 namespace DiscordBot.Commands
 {
@@ -10,27 +13,25 @@ namespace DiscordBot.Commands
          * Uses a highly complex algorithm to programmatically
          * "owofiy" a message and output "owowified" string.
          */
-        public static bool _IsOwowify = new bool();
-        public static bool IsOwowify 
-        {  get { return _IsOwowify; } set { _IsOwowify = value; } }
         
         [Command("owowify")]
-        public async Task SetBool(string arg)
+        public async Task SetBool(string arg = null)
         {
-            var admin = Context.Guild.GetUser(Context.Guild.Owner.Id);
-            var nickname = admin.Nickname ?? admin.Username;
             var user = (IGuildUser) Context.Message.Author;
-            if (user.GuildPermissions.Administrator)
+            var names = Context.Guild.Roles.Select(x => x.Name);
+            int index = names.IndexOf("Owowified");
+            
+            if (arg != null)
             {
                 switch (arg.ToLower())
                 {
                     case "on":
-                        _IsOwowify = true;
-                        await ReplyAsync("**OWOWIFY IS ON UwU**");
+                        await user.AddRoleAsync(Context.Guild.Roles.ElementAt(index));
+                        await ReplyAsync("**OWOWIFY is on for " + user.Mention +" UwU**");
                         break;
                     case "off":
-                        _IsOwowify = false;
-                        await ReplyAsync("**OWOWIFY IS OFF D:**");
+                        await user.RemoveRoleAsync(Context.Guild.Roles.ElementAt(index));
+                        await ReplyAsync("**OWOWIFY is off for " + user.Mention + " D:**");
                         break;
                     default:
                         await ReplyAsync("can u pls tell me if owowify is on or off xd");
@@ -39,7 +40,7 @@ namespace DiscordBot.Commands
             }
             else
             {
-                await Context.Channel.SendMessageAsync("your not daddy " + nickname);
+                await Context.Channel.SendMessageAsync(user.Mention + " can u pls tell me if owowify is on or off xd");
             }
            
 

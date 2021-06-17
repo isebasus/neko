@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using DiscordBot.Commands;
 using DiscordBot.Util;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,9 +16,7 @@ namespace DiscordBot
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-        
-        public IMessageChannel TextingChannel { get; private set; } = null;
-	
+
         public static void Main(string[] args)
             => new Program().MainAsync().GetAwaiter().GetResult();
 
@@ -28,7 +26,7 @@ namespace DiscordBot
             
             _client = new DiscordSocketClient();
             _commands = new CommandService();
-            
+
             _services = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
@@ -53,31 +51,44 @@ namespace DiscordBot
             
         }
 
+        private async Task CheckOwo(SocketCommandContext context, SocketUserMessage message)
+        {
+            var author = (IGuildUser)context.Message.Author;
+            var nickname = author.Nickname ?? author.Username;
+            if (message != null && message.Author.IsBot)
+            {
+                return;
+            }
+
+            if (context.User is SocketGuildUser user)
+            {
+                if (user.Roles.Any(x => x.Name == "Owowified"))
+                {
+                    await Owowify(context, message, nickname);
+                }
+            }
+        }
+
         private async Task Owowify(SocketCommandContext context, SocketUserMessage message, string nickname)
         {
             List<GuildEmote> emotes = new List<GuildEmote>(context.Guild.Emotes);
-
-            var newMessage = Owowification.Owowify(message.Content, emotes);
+            
             await context.Message.DeleteAsync();
+            var newMessage = Owowification.Owowify(message.Content, emotes);
             await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
         }
         
         private async Task HandleCommandAsync(SocketMessage arg)
         {
-            bool isOwo = Owowifier.IsOwowify;
             var message = arg as SocketUserMessage;
             var context = new SocketCommandContext(_client, message);
-            var author = (IGuildUser)context.Message.Author;
-            var nickname = author.Nickname ?? author.Username;
-            
-            if (message != null && message.Author.IsBot)
+
+            if (!(context.Guild.Roles.Any(x => x.Name == "Owowified")))
             {
-                return;
+                await context.Guild.CreateRoleAsync("Owowified", GuildPermissions.None, Color.Default, false, false);
             }
-            if (isOwo)
-            {
-                await Owowify(context, message, nickname);
-            }
+
+            await CheckOwo(context, message);
 
             int argPos = 0;
             if (message.HasStringPrefix("~", ref argPos))
@@ -92,7 +103,5 @@ namespace DiscordBot
             Console.WriteLine(msg.ToString());
             return Task.CompletedTask;
         }
-        
-        
     }
 }
