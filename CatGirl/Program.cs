@@ -75,7 +75,7 @@ namespace DiscordBot
             
             await context.Message.DeleteAsync();
             var newMessage = Owowification.Owowify(message.Content, emotes);
-            await context.Channel.SendMessageAsync("**" + nickname + "**: " + newMessage + " " + Owowification.Express());
+            await context.Channel.SendMessageAsync($"**{nickname}**: {newMessage} {Owowification.Express()}");
         }
         
         private async Task HandleCommandAsync(SocketMessage arg)

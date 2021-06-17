@@ -29,10 +29,10 @@ namespace DiscordBot.Util
             var alphaList = alphaMatches.Cast<Match>().Select(match => match.Value).ToList();
 
             foreach (string alpha in alphaList)
-            { 
+            {
                 var owowified = alpha.Replace("l", "w").Replace("L", "W")
                     .Replace("r", "w").Replace("R", "W")
-                    .Replace("o", "u").Replace("O", "U");
+                    .Replace("s", "sh").Replace("S", "SH");
 
                 text = text.Replace(alpha, owowified);
             }
