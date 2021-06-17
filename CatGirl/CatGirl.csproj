@@ -116,7 +116,7 @@
         <Compile Include="Commands\Commands.cs" />
         <Compile Include="Commands\CommandSource.cs" />
         <Compile Include="Commands\Owowifier.cs" />
-        <Compile Include="Program.cs" />
+        <Compile Include="Catgirl.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Util\EnumerableExtensions.cs" />
         <Compile Include="Util\Owowification.cs" />

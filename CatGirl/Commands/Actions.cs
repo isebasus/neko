@@ -13,7 +13,7 @@ namespace DiscordBot.Commands
         {
             if (user == "")
             {
-                user = "@" + Context.User.Username;
+                user = Context.User.Mention;
             }
 
             // Check if user exists
