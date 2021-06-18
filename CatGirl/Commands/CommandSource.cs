@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +68,18 @@ namespace DiscordBot.Commands
             await context.Channel.SendMessageAsync("", false, builder.Build());
         }
         
+        public static async Task SendAction(SocketCommandContext context, SocketUser user, string key, string message, string action)
+        {
+            // Get bots role
+            var role = GetMainRole(828491242627268668, context);
+            string json = WebScraper.GetAction(key);
+            var objects = JObject.Parse(json);
+            
+            string image = (String) objects["image"];
+            
+            await FormatAction(context, role, user, image, message, action);
+        }
+        
         public static string ParseJson(string json, string target)
         {
             JArray array = JArray.Parse(json);
@@ -87,18 +98,6 @@ namespace DiscordBot.Commands
             }
             
             return "";
-        }
-        
-        public static async Task SendAction(SocketCommandContext context, SocketUser user, string key, string message, string action)
-        {
-            // Get bots role
-            var role = GetMainRole(828491242627268668, context);
-            string json = WebScraper.GetAction(key);
-            var objects = JObject.Parse(json);
-            
-            string image = (String) objects["image"];
-            
-            await FormatAction(context, role, user, image, message, action);
         }
     }
 }
