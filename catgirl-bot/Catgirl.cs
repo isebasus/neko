@@ -72,10 +72,8 @@ namespace catgirl_bot
 
         private async Task Owowify(SocketCommandContext context, SocketUserMessage message, string nickname)
         {
-            List<GuildEmote> emotes = new List<GuildEmote>(context.Guild.Emotes);
-
             await context.Message.DeleteAsync();
-            var newMessage = Owowification.Owowify(message.Content, emotes);
+            var newMessage = Owowification.Owowify(message.Content);
             await context.Channel.SendMessageAsync($"**{nickname}**: {newMessage} {Owowification.Express()}");
         }
 

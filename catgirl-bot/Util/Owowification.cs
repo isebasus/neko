@@ -21,8 +21,18 @@ namespace catgirl_bot.Util
             int random = rand.Next(0, 20);
             return expressions[random];
         }
-        public static string Owowify(string text, List<GuildEmote> emotes)
+        public static string Owowify(string text)
         {
+            Regex url = new Regex(@"(?<Protocol>\w+):\/\/(?<Domain>[\w@][\w.:@]+)\/?[\w\.?=%&=\-@/$,]*");
+            Match match = url.Match(text);
+            string link = "";
+
+            if (match.Success)
+            {
+                link = match.Value;
+                text = text.Replace(match.Value, "");
+            }
+
             // Owowify text that is not an emote
             MatchCollection alphaMatches = Regex.Matches(text, @"[a-zA-Z]+(?![^:]*\:)"); // Regex prevent owowify of emoji
             var alphaList = alphaMatches.Cast<Match>().Select(match => match.Value).ToList();
@@ -36,7 +46,7 @@ namespace catgirl_bot.Util
                 text = text.Replace(alpha, owowified);
             }
 
-            return text;
+            return link + text;
         }
     }
 }
