@@ -35,14 +35,16 @@ namespace catgirl_bot.Commands
         public async Task Neko()
         {
             string nekoImage = WebScraper.GetNeko();
-            var role = CommandSource.GetMainRole(856252465916674108, Context);
+            var info = await Context.Client.GetApplicationInfoAsync();
+            var role = CommandSource.GetMainRole(info.Id, Context);
             await CommandSource.SendImage(Context, role, nekoImage, "🌸 uwu");
         }
 
         [Command("cat")]
         public async Task Cat()
         {
-            var role = CommandSource.GetMainRole(856252465916674108, Context);
+            var info = await Context.Client.GetApplicationInfoAsync();
+            var role = CommandSource.GetMainRole(info.Id, Context);
 
             string json = WebScraper.GetCat();
             string img = CommandSource.ParseJson(json, "url");
@@ -52,8 +54,9 @@ namespace catgirl_bot.Commands
         [Command("help")]
         public async Task Help()
         {
-            var role = CommandSource.GetMainRole(856252465916674108, Context);
-            var bot = Context.Guild.GetUser(856252465916674108);
+            var info = await Context.Client.GetApplicationInfoAsync();
+            var role = CommandSource.GetMainRole(info.Id, Context);
+            var bot = Context.Guild.GetUser(info.Id);
             Color color = CommandSource.CheckColor(role.Color);
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithAuthor($"{bot.Username}#{bot.DiscriminatorValue}", bot.GetAvatarUrl());
@@ -66,6 +69,9 @@ namespace catgirl_bot.Commands
             builder.AddField("Cuddle", "`~cuddle [@user]`", true);
             builder.AddField("Slap", "`~slap [@user]`", true);
             builder.AddField("Lick", "`~lick [@user]`", true);
+            builder.AddField("Tickle", "`~tickle [@user]`", true);
+            builder.AddField("Cry", "`~cry [@user]`", true);
+            builder.AddField("Feed", "`~feed [@user]`", true);
             builder.WithColor(color);
 
             await Context.Channel.SendMessageAsync("", false, builder.Build());

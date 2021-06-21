@@ -28,7 +28,7 @@ namespace catgirl_bot.Commands
         {
             var bot = (IGuildUser)context.Guild.GetUser(id);
 
-            if (bot.RoleIds != null)
+            if (bot != null)
             {
                 IDictionary<int, SocketRole> socketRoles = new Dictionary<int, SocketRole>();
                 foreach (ulong roleId in bot.RoleIds)
@@ -75,7 +75,8 @@ namespace catgirl_bot.Commands
         public static async Task SendAction(SocketCommandContext context, SocketUser user, string key, string message, string action)
         {
             // Get bots role
-            var role = GetMainRole(856252465916674108, context);
+            var info = await context.Client.GetApplicationInfoAsync();
+            var role = GetMainRole(info.Id, context);
             string json = WebScraper.GetAction(key);
             var objects = JObject.Parse(json);
 
