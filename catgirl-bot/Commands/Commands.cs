@@ -23,11 +23,11 @@ namespace catgirl_bot.Commands
             var user = (IGuildUser)Context.Message.Author;
             if (user.GuildPermissions.Administrator)
             {
-                await Context.Channel.SendMessageAsync("owo I love you " + nickname + " <3");
+                await ReplyAsync("owo I love you " + nickname + " <3", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
             }
             else
             {
-                await Context.Channel.SendMessageAsync("ew you're not " + nickname);
+                await ReplyAsync("ew you're not " + nickname, messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
             }
         }
 
@@ -35,14 +35,14 @@ namespace catgirl_bot.Commands
         public async Task Neko()
         {
             string nekoImage = WebScraper.GetNeko();
-            var role = CommandSource.GetMainRole(828491242627268668, Context);
+            var role = CommandSource.GetMainRole(856252465916674108, Context);
             await CommandSource.SendImage(Context, role, nekoImage, "🌸 uwu");
         }
 
         [Command("cat")]
         public async Task Cat()
         {
-            var role = CommandSource.GetMainRole(828491242627268668, Context);
+            var role = CommandSource.GetMainRole(856252465916674108, Context);
 
             string json = WebScraper.GetCat();
             string img = CommandSource.ParseJson(json, "url");
@@ -52,8 +52,8 @@ namespace catgirl_bot.Commands
         [Command("help")]
         public async Task Help()
         {
-            var role = CommandSource.GetMainRole(828491242627268668, Context);
-            var bot = Context.Guild.GetUser(828491242627268668);
+            var role = CommandSource.GetMainRole(856252465916674108, Context);
+            var bot = Context.Guild.GetUser(856252465916674108);
             Color color = CommandSource.CheckColor(role.Color);
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithAuthor($"{bot.Username}#{bot.DiscriminatorValue}", bot.GetAvatarUrl());

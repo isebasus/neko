@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Discord.Commands;
 using catgirl_bot.Util;
+using Discord;
 
 namespace catgirl_bot.Commands
 {
@@ -22,7 +23,7 @@ namespace catgirl_bot.Commands
             }
             else
             {
-                await Context.Channel.SendMessageAsync(Context.User.Mention + " that's not a real person Dx");
+                await ReplyAsync("nu! that is not a real person xd", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
             }
         }
         [Command("kiss")]

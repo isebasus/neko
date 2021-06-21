@@ -15,7 +15,7 @@ namespace catgirl_bot.Commands
         // Set role color to custom color if default
         public static Color CheckColor(Color color)
         {
-            if (color == Color.Default)
+            if (color == Color.Default || color == null)
             {
                 return new Color(88, 101, 242);
             }
@@ -28,16 +28,20 @@ namespace catgirl_bot.Commands
         {
             var bot = (IGuildUser)context.Guild.GetUser(id);
 
-            IDictionary<int, SocketRole> socketRoles = new Dictionary<int, SocketRole>();
-            foreach (ulong roleId in bot.RoleIds)
+            if (bot.RoleIds != null)
             {
-                // Set each role to SocketRole array
-                SocketRole role = context.Guild.GetRole(roleId);
-                socketRoles.Add(role.Position, role);
+                IDictionary<int, SocketRole> socketRoles = new Dictionary<int, SocketRole>();
+                foreach (ulong roleId in bot.RoleIds)
+                {
+                    // Set each role to SocketRole array
+                    SocketRole role = context.Guild.GetRole(roleId);
+                    socketRoles.Add(role.Position, role);
+                }
+                // Get main role
+                var mainRole = socketRoles[socketRoles.Keys.Max()].Id;
+                return context.Guild.GetRole(mainRole);
             }
-            // Get main role
-            var mainRole = socketRoles[socketRoles.Keys.Max()].Id;
-            return context.Guild.GetRole(mainRole);
+            return null;
         }
 
         // Sends an images with EmbedBuilders
@@ -71,7 +75,7 @@ namespace catgirl_bot.Commands
         public static async Task SendAction(SocketCommandContext context, SocketUser user, string key, string message, string action)
         {
             // Get bots role
-            var role = GetMainRole(828491242627268668, context);
+            var role = GetMainRole(856252465916674108, context);
             string json = WebScraper.GetAction(key);
             var objects = JObject.Parse(json);
 

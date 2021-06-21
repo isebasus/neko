@@ -26,20 +26,20 @@ namespace catgirl_bot.Commands
                 {
                     case "on":
                         await user.AddRoleAsync(Context.Guild.Roles.ElementAt(index));
-                        await ReplyAsync("**OWOWIFY is on for " + user.Mention + " UwU**");
+                        await ReplyAsync("**OWOWIFY is on for " + user.Mention + " UwU**", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
                         break;
                     case "off":
                         await user.RemoveRoleAsync(Context.Guild.Roles.ElementAt(index));
                         await ReplyAsync("**OWOWIFY is off for " + user.Mention + " D:**");
                         break;
                     default:
-                        await ReplyAsync("can u pls tell me if owowify is on or off xd");
+                        await ReplyAsync("can u pls tell me if owowify is on or off xd", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
                         break;
                 }
             }
             else
             {
-                await Context.Channel.SendMessageAsync(user.Mention + " can u pls tell me if owowify is on or off xd");
+                await ReplyAsync("can u pls tell me if owowify is on or off xd", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
             }
 
 
