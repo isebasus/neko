@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using catgirl_bot.Util;
 
 namespace catgirl_bot.Commands
 {
@@ -17,19 +16,18 @@ namespace catgirl_bot.Commands
         public async Task SetBool(string arg = null)
         {
             var user = (IGuildUser)Context.Message.Author;
-            var names = Context.Guild.Roles.Select(x => x.Name);
-            int index = names.IndexOf("Owowified");
+            var role = Context.Guild.Roles.FirstOrDefault(x => x.Name == "Owowified");
 
             if (arg != null)
             {
                 switch (arg.ToLower())
                 {
                     case "on":
-                        await user.AddRoleAsync(Context.Guild.Roles.ElementAt(index));
+                        await user.AddRoleAsync(role);
                         await ReplyAsync("**OWOWIFY is on for " + user.Mention + " UwU**", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
                         break;
                     case "off":
-                        await user.RemoveRoleAsync(Context.Guild.Roles.ElementAt(index));
+                        await user.RemoveRoleAsync(role);
                         await ReplyAsync("**OWOWIFY is off for " + user.Mention + " D:**");
                         break;
                     default:

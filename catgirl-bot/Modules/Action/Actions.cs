@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using Discord.Commands;
 using catgirl_bot.Util;
 using Discord;
 
-namespace catgirl_bot.Commands
+namespace catgirl_bot.Modules
 {
     public class Actions : ModuleBase<SocketCommandContext>
     {

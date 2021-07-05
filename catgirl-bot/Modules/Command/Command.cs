@@ -2,10 +2,11 @@
 using Discord;
 using Discord.Commands;
 using catgirl_bot.Util;
+using catgirl_bot.Modules;
 
-namespace catgirl_bot.Commands
+namespace catgirl_bot.Modules
 {
-    public class Commands : ModuleBase<SocketCommandContext>
+    public class Command : ModuleBase<SocketCommandContext>
     {
         [Command("goodnight")]
         public async Task Night()

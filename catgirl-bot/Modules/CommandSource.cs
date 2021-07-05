@@ -8,7 +8,7 @@ using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using catgirl_bot.Util;
 
-namespace catgirl_bot.Commands
+namespace catgirl_bot.Modules
 {
     public class CommandSource
     {

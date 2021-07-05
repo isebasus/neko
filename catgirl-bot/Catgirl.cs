@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace catgirl_bot
 
         public async Task MainAsync()
         {
-            string token = "";
+            string token = "ODI4NDkxMjQyNjI3MjY4NjY4.YGqWmA.8YhxgWWiFrKRXjDq8PWJsaqzNj4";
 
             _client = new DiscordSocketClient();
             _commands = new CommandService();
@@ -49,7 +48,6 @@ namespace catgirl_bot
         {
             _client.MessageReceived += HandleCommandAsync;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
-
         }
 
         private async Task CheckOwo(SocketCommandContext context, SocketUserMessage message)
@@ -72,7 +70,14 @@ namespace catgirl_bot
 
         private async Task Owowify(SocketCommandContext context, SocketUserMessage message, string nickname)
         {
-            await context.Message.DeleteAsync();
+            try
+            {
+                await context.Message.DeleteAsync();
+            }
+            catch
+            {
+                await context.Channel.SendMessageAsync("Tell your baka administrator to change the permissions in this channel (Manage Messages) so that way I can owowify! ;_;"); 
+            }
             var newMessage = Owowification.Owowify(message.Content);
             await context.Channel.SendMessageAsync($"**{nickname}**: {newMessage} {Owowification.Express()}");
         }
