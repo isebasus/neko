@@ -34,9 +34,12 @@ namespace DiscordBot.Commands
         [Command("catgirl")]
         public async Task Neko()
         {
-            string nekoImage = WebScraper.GetNeko();
-            var role = CommandSource.GetMainRole(828491242627268668, Context);
-            await CommandSource.SendImage(Context, role, nekoImage, "🌸 uwu");
+            if (Context.Guild.Id != 881050555156406272)
+            {
+                string nekoImage = WebScraper.GetNeko();
+                var role = CommandSource.GetMainRole(828491242627268668, Context);
+                await CommandSource.SendImage(Context, role, nekoImage, "🌸 uwu");
+            }
         }
         
         [Command("cat")]
