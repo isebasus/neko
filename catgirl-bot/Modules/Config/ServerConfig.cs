@@ -24,7 +24,6 @@ namespace catgirl_bot.Modules.Config
             {
                 filter[Context.Guild.Id] = !filter[Context.Guild.Id];
                 await Context.Channel.SendMessageAsync("**Lewd had been toggled to " + filter[Context.Guild.Id] + " !**");
-                return;
             }
             filter.Add(Context.Guild.Id, false);
             await Context.Channel.SendMessageAsync("**Lewd had been toggled to " + filter[Context.Guild.Id] + " !**");

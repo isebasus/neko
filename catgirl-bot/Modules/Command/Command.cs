@@ -38,7 +38,7 @@ namespace catgirl_bot.Modules
         [Command("catgirl")]
         public async Task Neko()
         {
-            if (!ServerConfig.filter.ContainsKey(Context.Guild.Id) && ServerConfig.filter[Context.Guild.Id])
+            if (ServerConfig.filter.ContainsKey(Context.Guild.Id) && !ServerConfig.filter[Context.Guild.Id])
             {
                 return;
             }
