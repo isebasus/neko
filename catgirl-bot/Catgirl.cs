@@ -22,7 +22,7 @@ namespace catgirl_bot
 
         public async Task MainAsync()
         {
-            string token = "";
+            string token = "ODU2MjUyNDY1OTE2Njc0MTA4.YM-VQA.sT5u96Av1S8OQ0ElwriJyA-3UWI";
 
             _client = new DiscordSocketClient();
             _commands = new CommandService();

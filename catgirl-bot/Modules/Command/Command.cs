@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using catgirl_bot.Util;
 using catgirl_bot.Modules;
+using catgirl_bot.Modules.Config;
 
 namespace catgirl_bot.Modules
 {
@@ -35,6 +38,11 @@ namespace catgirl_bot.Modules
         [Command("catgirl")]
         public async Task Neko()
         {
+            if (!ServerConfig.filter.ContainsKey(Context.Guild.Id) && ServerConfig.filter[Context.Guild.Id])
+            {
+                return;
+            }
+            
             string nekoImage = WebScraper.GetNeko();
             var info = await Context.Client.GetApplicationInfoAsync();
             var role = CommandSource.GetMainRole(info.Id, Context);

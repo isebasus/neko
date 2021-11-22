@@ -41,7 +41,7 @@ namespace catgirl_bot.Util
             {
                 var owowified = alpha.Replace("l", "w").Replace("L", "W")
                     .Replace("r", "w").Replace("R", "W")
-                    .Replace("s", "sh").Replace("S", "SH");
+                    .Replace("o", "u").Replace("o", "u");
 
                 text = text.Replace(alpha, owowified);
             }
