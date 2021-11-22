@@ -18,6 +18,7 @@ namespace catgirl_bot.Modules.Config
             if (!((SocketGuildUser)Context.User).GuildPermissions.ManageGuild)
             {
                 await ReplyAsync("Nu! u are not a administrator!!!", messageReference: new MessageReference(Context.Message.Id)).ConfigureAwait(false);
+                return;
             }
             
             if (filter.ContainsKey(Context.Guild.Id))
